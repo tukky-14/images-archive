@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0ea5b7"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <!-- rounded base -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0f172a"/>
+  <rect x="2" y="2" width="60" height="60" rx="14" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- image card -->
+  <g>
+    <rect x="10" y="22" width="30" height="22" rx="4" fill="#0ea5b7"/>
+    <path d="M12 42h26" stroke="#083b44" stroke-width="2"/>
+    <circle cx="18" cy="28" r="3" fill="#d1faff"/>
+    <path d="M14 40l8-8 6 6 6-6 4 8H14z" fill="#083b44"/>
+  </g>
+
+  <!-- pdf sheet with fold -->
+  <g>
+    <path d="M36 10h12l8 8v24a6 6 0 0 1-6 6H36a6 6 0 0 1-6-6V16a6 6 0 0 1 6-6z" fill="#a78bfa"/>
+    <path d="M48 10v8h8" fill="#c7b8ff"/>
+    <path d="M44 34c0 3-2 6-6 6m6-6c0-3 2-6 6-6m-6 6h-6" stroke="#4c1d95" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- subtle gradient stroke -->
+  <rect x="3" y="3" width="58" height="58" rx="12" fill="none" stroke="url(#g1)" opacity=".35"/>
+</svg>
+
+

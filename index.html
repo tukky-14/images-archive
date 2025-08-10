@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>画像・資料アーカイブ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">画像・資料アーカイブ</div>
+      <div class="search-wrap">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="検索（ファイル名・カテゴリ・拡張子）"
+          aria-label="検索"
+        />
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="section-title">カテゴリ</div>
+          <nav id="categoryNav" class="category-nav"></nav>
+        </div>
+        <div class="sidebar-section">
+          <div class="section-title">フィルタ</div>
+          <div class="filters">
+            <label
+              ><input
+                type="checkbox"
+                class="type-filter"
+                value="image"
+                checked
+              />
+              画像</label
+            >
+            <label
+              ><input type="checkbox" class="type-filter" value="pdf" checked />
+              PDF</label
+            >
+          </div>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div id="breadcrumbs" class="breadcrumbs"></div>
+        <div id="resultStats" class="result-stats"></div>
+        <div id="galleryGrid" class="grid"></div>
+      </section>
+    </main>
+
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+      <button class="lightbox-close" aria-label="閉じる" id="lightboxClose">
+        ×
+      </button>
+      <button class="lightbox-prev" aria-label="前へ" id="lightboxPrev">
+        ‹
+      </button>
+      <button class="lightbox-next" aria-label="次へ" id="lightboxNext">
+        ›
+      </button>
+      <div class="lightbox-inner">
+        <img id="lightboxImage" alt="viewer" />
+        <div id="lightboxCaption" class="lightbox-caption"></div>
+      </div>
+    </div>
+
+    <template id="gridItemTemplate">
+      <div class="card">
+        <div class="thumb-wrap">
+          <img class="thumb" loading="lazy" alt="" />
+          <div class="thumb-badge" data-type=""></div>
+        </div>
+        <div class="meta">
+          <div class="name" title=""></div>
+          <div class="path" title=""></div>
+        </div>
+      </div>
+    </template>
+
+    <script src="assets/app.js" defer></script>
+  </body>
+</html>

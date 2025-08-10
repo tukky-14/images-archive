@@ -14,6 +14,15 @@
   </head>
   <body>
     <header class="app-header">
+      <button
+        id="menuToggle"
+        class="hamburger"
+        aria-label="メニュー"
+        aria-expanded="false"
+        aria-controls="sidebar"
+      >
+        <span></span><span></span><span></span>
+      </button>
       <div class="brand">画像・資料アーカイブ</div>
       <div class="search-wrap">
         <input
@@ -26,7 +35,7 @@
     </header>
 
     <main class="layout">
-      <aside class="sidebar">
+      <aside id="sidebar" class="sidebar" aria-label="サイドバー">
         <div class="sidebar-section">
           <div class="section-title">カテゴリ</div>
           <nav id="categoryNav" class="category-nav"></nav>
@@ -57,8 +66,12 @@
         <div id="galleryGrid" class="grid"></div>
       </section>
     </main>
+    <div id="menuOverlay" class="menu-overlay" aria-hidden="true"></div>
 
     <div id="lightbox" class="lightbox" aria-hidden="true">
+      <button class="lightbox-back" aria-label="戻る" id="lightboxBack">
+        ← 戻る
+      </button>
       <button class="lightbox-close" aria-label="閉じる" id="lightboxClose">
         ×
       </button>
@@ -70,7 +83,19 @@
       </button>
       <div class="lightbox-inner">
         <img id="lightboxImage" alt="viewer" />
+        <iframe
+          id="lightboxFrame"
+          class="pdf-frame"
+          title="PDF プレビュー"
+          loading="lazy"
+        ></iframe>
         <div id="lightboxCaption" class="lightbox-caption"></div>
+        <a id="lightboxDownload" class="lightbox-download" href="#" download
+          >↓ ダウンロード</a
+        >
+        <div id="lightboxHint" class="lightbox-hint">
+          背景タップで閉じる／Esc
+        </div>
       </div>
     </div>
 

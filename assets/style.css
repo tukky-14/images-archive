@@ -7,6 +7,7 @@
   --primary: #22d3ee;
   --accent: #a78bfa;
   --border: #1f2937;
+  --header-h: 56px;
 }
 
 * {
@@ -39,6 +40,35 @@ body {
 .brand {
   font-weight: 700;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hamburger {
+  display: none;
+  width: 38px;
+  height: 34px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+.hamburger span {
+  display: block;
+  height: 2px;
+  background: var(--text);
+  margin: 5px 0;
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 .search-wrap {
   margin-left: auto;
@@ -66,6 +96,15 @@ body {
   border-right: 1px solid var(--border);
   background: linear-gradient(0deg, var(--panel-2), var(--panel));
   padding: 16px 14px;
+}
+.menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.menu-overlay.show {
+  display: block;
 }
 .sidebar-section + .sidebar-section {
   margin-top: 18px;
@@ -120,6 +159,7 @@ body {
     rgba(17, 24, 39, 0.7),
     rgba(15, 23, 42, 0.7)
   );
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
 }
 .thumb-wrap {
   position: relative;
@@ -135,20 +175,23 @@ body {
 .thumb-badge {
   position: absolute;
   inset: 10px auto auto 10px;
-  background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--border);
   border-radius: 999px;
   font-size: 12px;
-  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
   padding: 4px 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 .thumb-badge[data-type="pdf"] {
-  background: rgba(167, 139, 250, 0.2);
-  border-color: #6d28d9;
+  background: #6d28d9; /* solid violet */
+  border-color: #4c1d95;
 }
 .thumb-badge[data-type="image"] {
-  background: rgba(34, 211, 238, 0.2);
-  border-color: #0ea5b7;
+  background: #0ea5b7; /* solid cyan */
+  border-color: #0a5e68;
 }
 .meta {
   padding: 10px 12px;
@@ -196,6 +239,18 @@ body {
   color: var(--muted);
   font-size: 13px;
 }
+.lightbox-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
 .lightbox-close,
 .lightbox-prev,
 .lightbox-next {
@@ -207,6 +262,7 @@ body {
   padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
+  z-index: 30;
 }
 .lightbox-close {
   right: 14px;
@@ -223,13 +279,89 @@ body {
 }
 
 @media (max-width: 860px) {
+  .app-header {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .brand {
+    font-size: 16px;
+  }
+  .search-wrap {
+    margin-left: 0;
+    width: 100%;
+    order: 3;
+  }
+  .search-wrap input {
+    width: 100%;
+  }
   .layout {
     grid-template-columns: 1fr;
   }
   .sidebar {
     order: 2;
+    position: fixed;
+    left: 0;
+    top: var(--header-h);
+    right: auto;
+    bottom: 0;
+    width: min(84vw, 340px);
+    border-right: 0;
+    height: calc(100vh - var(--header-h));
+    overflow: auto;
+    transform: translateX(-104%);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 20;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  .sidebar.show {
+    transform: translateX(0);
+    border-right: 1px solid var(--border);
+    box-shadow: 8px 0 20px rgba(0, 0, 0, 0.35);
   }
   .content {
     order: 1;
   }
+  .hamburger {
+    display: inline-block;
+  }
+  .menu-overlay {
+    z-index: 15;
+  }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+}
+
+/* PDF frame & lightbox extras */
+.pdf-frame {
+  display: none;
+  width: 90vw;
+  height: 80vh;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b1220;
+}
+.lightbox .lightbox-download,
+.lightbox .lightbox-back {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 31;
+}
+.lightbox .lightbox-download {
+  left: auto;
+  right: 54px;
+  top: 14px;
+}
+.lightbox .lightbox-back {
+  left: 14px;
+  top: 14px;
 }

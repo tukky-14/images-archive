@@ -19,10 +19,16 @@
     gridItemTemplate: document.getElementById("gridItemTemplate"),
     lightbox: document.getElementById("lightbox"),
     lightboxImage: document.getElementById("lightboxImage"),
+    lightboxFrame: document.getElementById("lightboxFrame"),
     lightboxCaption: document.getElementById("lightboxCaption"),
     lightboxClose: document.getElementById("lightboxClose"),
     lightboxPrev: document.getElementById("lightboxPrev"),
     lightboxNext: document.getElementById("lightboxNext"),
+    lightboxBack: document.getElementById("lightboxBack"),
+    lightboxDownload: document.getElementById("lightboxDownload"),
+    menuToggle: document.getElementById("menuToggle"),
+    sidebar: document.getElementById("sidebar"),
+    menuOverlay: document.getElementById("menuOverlay"),
   };
 
   async function loadData() {
@@ -60,6 +66,10 @@
         state.activeCategory = cat;
         renderCategoryNav();
         applyFilters();
+        // モバイル時はカテゴリ選択でメニューを閉じる
+        if (window.matchMedia("(max-width: 860px)").matches) {
+          toggleMenu(false);
+        }
       });
       els.categoryNav.appendChild(btn);
     }
@@ -160,13 +170,19 @@
   function updateLightbox() {
     const it = state.filtered[state.lightboxIndex];
     if (!it) return;
-    if (it.type === "pdf") {
-      els.lightboxImage.src =
-        "data:image/svg+xml;utf8," + encodeURIComponent(svgPdfPreview());
+    const isPdf = it.type === "pdf";
+    if (isPdf) {
+      els.lightboxFrame.style.display = "block";
+      els.lightboxImage.style.display = "none";
+      els.lightboxFrame.src = it.path; // GitHub Pages上でもPDFは直接埋め込み可能
     } else {
+      els.lightboxFrame.style.display = "none";
+      els.lightboxImage.style.display = "block";
       els.lightboxImage.src = it.path;
     }
     els.lightboxCaption.textContent = `${it.name} — ${it.dir}`;
+    els.lightboxDownload.href = it.path;
+    els.lightboxDownload.download = it.name;
   }
 
   // Events
@@ -183,8 +199,13 @@
     });
   });
   els.lightboxClose.addEventListener("click", onCloseLightbox);
+  els.lightboxBack.addEventListener("click", onCloseLightbox);
   els.lightboxPrev.addEventListener("click", onPrev);
   els.lightboxNext.addEventListener("click", onNext);
+  // Lightbox 背景クリックで閉じる（内側クリックは無視）
+  els.lightbox.addEventListener("click", (e) => {
+    if (e.target === els.lightbox) onCloseLightbox();
+  });
   window.addEventListener("keydown", (e) => {
     if (state.lightboxIndex >= 0) {
       if (e.key === "Escape") onCloseLightbox();
@@ -194,4 +215,24 @@
   });
 
   loadData();
+
+  // Hamburger menu (mobile)
+  function toggleMenu(force) {
+    const expand =
+      typeof force === "boolean"
+        ? force
+        : els.sidebar.classList.contains("show") === false;
+    els.sidebar.classList.toggle("show", expand);
+    els.menuOverlay.classList.toggle("show", expand);
+    els.menuToggle.setAttribute("aria-expanded", String(expand));
+    // スクロールロック（モバイルで背面のスクロールを抑止）
+    document.body.style.overflow = expand ? "hidden" : "";
+  }
+  els.menuToggle?.addEventListener("click", () => toggleMenu());
+  els.menuOverlay?.addEventListener("click", () => toggleMenu(false));
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && els.sidebar.classList.contains("show")) {
+      toggleMenu(false);
+    }
+  });
 })();
